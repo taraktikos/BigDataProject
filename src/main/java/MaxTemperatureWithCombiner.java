@@ -16,7 +16,7 @@ public class MaxTemperatureWithCombiner {
             System.exit(-1);
         }
 
-        Job job = new Job();
+        Job job = Job.getInstance();
         job.setJarByClass(MaxTemperatureWithCombiner.class);
         job.setJobName("Max temperature");
 
