@@ -1,3 +1,5 @@
+package temperature;
+
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -8,22 +10,23 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 /**
  * Created by Taras S on 29.03.2015.
  */
-public class MaxTemperature {
+public class MaxTemperatureWithCombiner {
 
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
-            System.err.println("Usage: MaxTemperature <input path> <output path>");
+            System.err.println("Usage: temperature.MaxTemperature <input path> <output path>");
             System.exit(-1);
         }
 
         Job job = Job.getInstance();
-        job.setJarByClass(MaxTemperature.class);
+        job.setJarByClass(MaxTemperatureWithCombiner.class);
         job.setJobName("Max temperature");
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         job.setMapperClass(MaxTemperatureMapper.class);
+        job.setCombinerClass(MaxTemperatureReducer.class);
         job.setReducerClass(MaxTemperatureReducer.class);
 
         job.setOutputKeyClass(Text.class);
